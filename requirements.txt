@@ -1,0 +1,10 @@
+Flask==2.3.4
+Werkzeug==2.3.8
+Jinja2==3.1.2
+itsdangerous==2.1.2
+click==8.1.3
+gunicorn==20.1.0
+sqlite3==0.0.1  # built-in, usually no need to install
+python-dotenv==1.0.0
+twilio==8.15.0  # if you’re using Twilio for SMS
+requests==2.32.0
