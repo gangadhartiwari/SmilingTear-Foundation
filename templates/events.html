@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}Events - {{ site_info.name }}{% endblock %}
+
+{% block content %}
+
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+        <h1 class="text-5xl font-bold mb-12 text-center">Our Events</h1>
+
+        <!-- Upcoming Events -->
+        <h2 class="text-3xl font-semibold mb-6">Upcoming Events</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
+            {% for event in upcoming_events %}
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
+                <!-- Event Image -->
+                <img src="{{ url_for('static', filename='images/events/' + event.image) }}" alt="{{ event.title }}" class="w-full h-56 object-cover">
+
+                <div class="p-6 flex-1 flex flex-col">
+                    <!-- Badge -->
+                    <div class="inline-block px-4 py-1 bg-blue-600 text-white rounded-full text-sm mb-2">
+                        {{ event.status|title }}
+                    </div>
+
+                    <!-- Title & Description -->
+                    <h3 class="text-2xl font-bold mb-2">{{ event.title }}</h3>
+                    <p class="text-gray-600 mb-4 flex-1">{{ event.description }}</p>
+
+                    <!-- Date & Location -->
+                    <p class="text-gray-500 text-sm mb-4">{{ event.date }} | {{ event.location }}</p>
+
+                    <!-- Type / Category -->
+                    {% if event.type %}
+                    <p class="text-sm text-gray-500 mb-2">Category: <span class="font-semibold">{{ event.type|replace('-', ' ')|title }}</span></p>
+                    {% endif %}
+
+                    <!-- Organizers -->
+                    {% if event.organizers %}
+                    <p class="text-sm text-gray-500 mb-2">Organizers: <span class="font-semibold">{{ event.organizers|join(', ') }}</span></p>
+                    {% endif %}
+
+                    <!-- Volunteers -->
+                    {% if event.volunteers %}
+                    <p class="text-sm text-gray-500 mb-4">Volunteers: <span class="font-semibold">{{ event.volunteers }}</span></p>
+                    {% endif %}
+
+                    <!-- Registration -->
+                    {% if event.registration and event.registration.required %}
+                    <div class="mb-4">
+                        {% if event.registration.registered < event.registration.capacity %}
+                        <button class="w-full btn-primary text-lg py-2 rounded-full">
+                            Register Now
+                        </button>
+                        {% else %}
+                        <button class="w-full bg-gray-400 text-white px-8 py-2 rounded-full font-semibold text-lg cursor-not-allowed" disabled>
+                            Event Full
+                        </button>
+                        {% endif %}
+
+                        <div class="mt-2 text-sm text-gray-600">
+                            {{ event.registration.registered }} / {{ event.registration.capacity }} registered
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Gallery -->
+                    {% if event.images and event.images.gallery %}
+                    <div class="grid grid-cols-3 gap-2 mb-4">
+                        {% for img in event.images.gallery %}
+                        <img src="{{ url_for('static', filename='images/events/' + img) }}" alt="Gallery Image" class="w-full h-20 object-cover rounded-lg">
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Social Share -->
+                    <div class="flex space-x-2 mt-auto">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" target="_blank" class="w-8 h-8 bg-blue-600 text-white flex items-center justify-center rounded-full hover:bg-blue-700">
+                            <i class="fab fa-facebook-f text-sm"></i>
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?url={{ request.url }}&text={{ event.title }}" target="_blank" class="w-8 h-8 bg-blue-400 text-white flex items-center justify-center rounded-full hover:bg-blue-500">
+                            <i class="fab fa-twitter text-sm"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url }}" target="_blank" class="w-8 h-8 bg-blue-700 text-white flex items-center justify-center rounded-full hover:bg-blue-800">
+                            <i class="fab fa-linkedin-in text-sm"></i>
+                        </a>
+                        <a href="https://wa.me/?text={{ event.title }}%20{{ request.url }}" target="_blank" class="w-8 h-8 bg-green-500 text-white flex items-center justify-center rounded-full hover:bg-green-600">
+                            <i class="fab fa-whatsapp text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Past Events -->
+        <h2 class="text-3xl font-semibold mb-6">Past Events</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {% for event in past_events %}
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col opacity-90">
+                <img src="{{ url_for('static', filename='images/events/' + event.image) }}" alt="{{ event.title }}" class="w-full h-56 object-cover">
+
+                <div class="p-6 flex-1 flex flex-col">
+                    <div class="inline-block px-4 py-1 bg-gray-400 text-white rounded-full text-sm mb-2">
+                        {{ event.status|title }}
+                    </div>
+
+                    <h3 class="text-2xl font-bold mb-2">{{ event.title }}</h3>
+                    <p class="text-gray-600 mb-4 flex-1">{{ event.description }}</p>
+                    <p class="text-gray-500 text-sm mb-4">{{ event.date }} | {{ event.location }}</p>
+
+                    {% if event.type %}
+                    <p class="text-sm text-gray-500 mb-2">Category: <span class="font-semibold">{{ event.type|replace('-', ' ')|title }}</span></p>
+                    {% endif %}
+
+                    {% if event.organizers %}
+                    <p class="text-sm text-gray-500 mb-2">Organizers: <span class="font-semibold">{{ event.organizers|join(', ') }}</span></p>
+                    {% endif %}
+
+                    {% if event.volunteers %}
+                    <p class="text-sm text-gray-500 mb-4">Volunteers: <span class="font-semibold">{{ event.volunteers }}</span></p>
+                    {% endif %}
+
+                    {% if event.results %}
+                    <div class="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-4 mb-4">
+                        <h4 class="text-lg font-bold mb-2">Event Results</h4>
+                        <div class="grid grid-cols-2 gap-2">
+                            {% for key, value in event.results.items() %}
+                            <div class="bg-white rounded-lg p-2 text-center">
+                                <div class="text-blue-600 font-bold">{{ value }}</div>
+                                <div class="text-gray-500 text-sm">{{ key|replace('_', ' ')|title }}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Gallery -->
+                    {% if event.images and event.images.gallery %}
+                    <div class="grid grid-cols-3 gap-2 mb-4">
+                        {% for img in event.images.gallery %}
+                        <img src="{{ url_for('static', filename='images/events/' + img) }}" alt="Gallery Image" class="w-full h-20 object-cover rounded-lg">
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Social Share -->
+                    <div class="flex space-x-2 mt-auto">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" target="_blank" class="w-8 h-8 bg-blue-600 text-white flex items-center justify-center rounded-full hover:bg-blue-700">
+                            <i class="fab fa-facebook-f text-sm"></i>
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?url={{ request.url }}&text={{ event.title }}" target="_blank" class="w-8 h-8 bg-blue-400 text-white flex items-center justify-center rounded-full hover:bg-blue-500">
+                            <i class="fab fa-twitter text-sm"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url }}" target="_blank" class="w-8 h-8 bg-blue-700 text-white flex items-center justify-center rounded-full hover:bg-blue-800">
+                            <i class="fab fa-linkedin-in text-sm"></i>
+                        </a>
+                        <a href="https://wa.me/?text={{ event.title }}%20{{ request.url }}" target="_blank" class="w-8 h-8 bg-green-500 text-white flex items-center justify-center rounded-full hover:bg-green-600">
+                            <i class="fab fa-whatsapp text-sm"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

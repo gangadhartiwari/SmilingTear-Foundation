@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}{{ site_info.description }}{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}NGO, education, healthcare, charity, donation, volunteer, India{% endblock %}">
+    <title>{% block title %}{{ site_info.name }} - {{ site_info.tagline }}{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo/logo-icon.png') }}">
+    
+    <!-- External CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Inter", sans-serif; overflow-x: hidden; }
+
+        :root { --primary: #1e40af; --secondary: #10b981; --accent: #f59e0b; --dark: #1f2937; }
+
+        .animated-gradient {
+            background: linear-gradient(270deg, #1e40af, #10b981, #f59e0b);
+            background-size: 600% 600%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none; cursor: pointer;
+        }
+
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(30, 64, 175, 0.3); }
+
+        .btn-secondary {
+            background: white; color: var(--primary);
+            padding: 12px 30px; border-radius: 50px;
+            border: 2px solid var(--primary);
+            font-weight: 600; cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover { background: var(--primary); color: white; }
+
+        .scroll-to-top {
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--primary); color: white;
+            width: 50px; height: 50px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; opacity: 0; visibility: hidden;
+            transition: all 0.3s ease; z-index: 1000;
+        }
+
+        .scroll-to-top.visible { opacity: 1; visibility: visible; }
+
+        .alert { padding: 1rem; margin-bottom: 1rem; border-radius: 0.5rem; }
+        .alert-success { background-color: #d1fae5; color: #065f46; border: 1px solid #10b981; }
+        .alert-warning { background-color: #fef3c7; color: #92400e; border: 1px solid #f59e0b; }
+        .alert-error { background-color: #fee2e2; color: #991b1b; border: 1px solid #ef4444; }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Bar -->
+    <div class="bg-blue-800 text-white">
+        <div class="container mx-auto px-6 flex justify-between items-center text-sm py-2">
+            <div class="flex items-center space-x-6">
+                <a href="tel:{{ contact_info.phone }}" class="hover:text-gray-200 flex items-center">
+                    <i class="fas fa-phone mr-2"></i> {{ contact_info.phone }}
+                </a>
+                <a href="mailto:{{ contact_info.email }}" class="hover:text-gray-200 flex items-center">
+                    <i class="fas fa-envelope mr-2"></i> {{ contact_info.email }}
+                </a>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                {% if social_media.facebook %}<a href="{{ social_media.facebook }}" target="_blank" class="hover:text-gray-200"><i class="fab fa-facebook"></i></a>{% endif %}
+                {% if social_media.instagram %}<a href="{{ social_media.instagram }}" target="_blank" class="hover:text-gray-200"><i class="fab fa-instagram"></i></a>{% endif %}
+                {% if social_media.linkedin %}<a href="{{ social_media.linkedin }}" target="_blank" class="hover:text-gray-200"><i class="fab fa-linkedin"></i></a>{% endif %}
+                {% if social_media.twitter %}<a href="{{ social_media.twitter }}" target="_blank" class="hover:text-gray-200"><i class="fab fa-twitter"></i></a>{% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <a href="{{ url_for('index') }}" class="flex items-center space-x-3">
+                        <img style="width: 100px; height:70px;" src="{{ url_for('static', filename='images/logo/logo-icon.png') }}" alt="Logo" class="w-12 h-12 rounded-full">
+                        <div>
+                            <h1 class="text-xl font-bold text-gray-800">{{ site_info.name.split('Foundation')[0] }}</h1>
+                            <p class="text-xs text-gray-500">Foundation</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{{ url_for('index') }}" class="text-gray-700 hover:text-blue-600 font-medium {% if request.endpoint == 'index' %}text-blue-600{% endif %}">Home</a>
+                    <a href="{{ url_for('about') }}" class="text-gray-700 hover:text-blue-600 font-medium {% if request.endpoint == 'about' %}text-blue-600{% endif %}">About Us</a>
+                    <a href="{{ url_for('programs') }}" class="text-gray-700 hover:text-blue-600 font-medium {% if request.endpoint in ['programs','program_detail'] %}text-blue-600{% endif %}">Programs</a>
+                    <a href="{{ url_for('events') }}" class="text-gray-700 hover:text-blue-600 font-medium {% if request.endpoint in ['events','event_detail'] %}text-blue-600{% endif %}">Events</a>
+                    <a href="{{ url_for('blog') }}" class="text-gray-700 hover:text-blue-600 font-medium {% if request.endpoint in ['blog','blog_detail'] %}text-blue-600{% endif %}">Blog</a>
+                    <a href="{{ url_for('contact') }}" class="text-gray-700 hover:text-blue-600 font-medium {% if request.endpoint == 'contact' %}text-blue-600{% endif %}">Contact</a>
+                </div>
+
+                <!-- CTA / Login Buttons -->
+                <div class="hidden md:flex items-center space-x-4">
+
+                    {% if session.get('username') %}
+
+                        {% if session.get('role') == 'admin' %}
+                            <a href="{{ url_for('admin_dashboard') }}" class="text-gray-700 hover:text-blue-600 font-medium">Admin Dashboard</a>
+
+                        {% elif session.get('role') == 'manager' %}
+                            <a href="{{ url_for('manager_dashboard') }}" class="text-gray-700 hover:text-blue-600 font-medium">Manager Panel</a>
+
+                        {% else %}
+                            <a href="{{ url_for('volunteer_dashboard') }}" class="text-gray-700 hover:text-blue-600 font-medium">My Area</a>
+                        {% endif %}
+
+                        <a href="{{ url_for('logout') }}" class="btn-secondary">Logout ({{ session.username }})</a>
+
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn-secondary">Log in</a>
+                    {% endif %}
+
+                    <a href="{{ url_for('volunteer') }}" class="btn-secondary">Join Us</a>
+                    <a href="{{ url_for('donate') }}" class="btn-primary">Donate Now</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <button class="md:hidden" id="mobile-menu-btn">
+                    <i class="fas fa-bars text-2xl text-gray-700"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="hidden mobile-menu mt-4" id="mobile-menu">
+                <div class="flex flex-col space-y-4">
+
+                    {% if session.get('username') %}
+                        {% if session.get('role') == 'admin' %}
+                            <a href="{{ url_for('admin_dashboard') }}" class="text-gray-700 hover:text-blue-600 font-medium">Admin Dashboard</a>
+                        {% elif session.get('role') == 'manager' %}
+                            <a href="{{ url_for('manager_dashboard') }}" class="text-gray-700 hover:text-blue-600 font-medium">Manager Panel</a>
+                        {% else %}
+                            <a href="{{ url_for('volunteer_dashboard') }}" class="text-gray-700 hover:text-blue-600 font-medium">My Area</a>
+                        {% endif %}
+
+                        <a href="{{ url_for('logout') }}" class="text-gray-700 hover:text-blue-600 font-medium">Logout ({{ session.username }})</a>
+
+                    {% else %}
+                        
+                        <a href="{{ url_for('login') }}" class="text-gray-700 hover:text-blue-600 font-medium">Log in</a>
+                    {% endif %}
+
+                    <a href="{{ url_for('index') }}" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
+                    <a href="{{ url_for('about') }}" class="text-gray-700 hover:text-blue-600 font-medium">About Us</a>
+                    <a href="{{ url_for('programs') }}" class="text-gray-700 hover:text-blue-600 font-medium">Programs</a>
+                    <a href="{{ url_for('events') }}" class="text-gray-700 hover:text-blue-600 font-medium">Events</a>
+                    <a href="{{ url_for('blog') }}" class="text-gray-700 hover:text-blue-600 font-medium">Blog</a>
+                    <a href="{{ url_for('contact') }}" class="text-gray-700 hover:text-blue-600 font-medium">Contact</a>
+                    <a href="{{ url_for('volunteer') }}" class="btn-secondary w-full text-center">Join Us</a>
+                    <a href="{{ url_for('donate') }}" class="btn-primary w-full text-center">Donate Now</a>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mx-auto px-6 mt-4">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-6">
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <img src="{{ url_for('static', filename='images/logo/logo-icon.png') }}" alt="Logo" class="w-10 h-10 rounded-full">
+                        <div>
+                            <h3 class="text-xl font-bold">{{ site_info.name.split('Foundation')[0] }}</h3>
+                            <p class="text-xs text-gray-400">Foundation</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400">{{ site_info.description[:100] }}...</p>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{{ url_for('index') }}" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="{{ url_for('about') }}" class="text-gray-400 hover:text-white">About Us</a></li>
+                        <li><a href="{{ url_for('programs') }}" class="text-gray-400 hover:text-white">Programs</a></li>
+                        <li><a href="{{ url_for('events') }}" class="text-gray-400 hover:text-white">Events</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Get Involved</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{{ url_for('volunteer') }}" class="text-gray-400 hover:text-white">Volunteer</a></li>
+                        <li><a href="{{ url_for('donate') }}" class="text-gray-400 hover:text-white">Donate</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Partner With Us</a></li>
+                        <li><a href="{{ url_for('contact') }}" class="text-gray-400 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Newsletter</h3>
+                    <p class="text-gray-400 mb-4">Subscribe to get updates</p>
+                    <form>
+                        <div class="flex">
+                            <input type="email" placeholder="Your email" class="flex-1 px-4 py-2 rounded-l-lg text-gray-900">
+                            <button class="bg-blue-600 px-6 py-2 rounded-r-lg hover:bg-blue-700"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
+                <p>&copy; {{ current_year }} {{ site_info.name }}. All rights reserved.</p>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <div class="scroll-to-top" id="scrollToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <script>
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) scrollToTopBtn.classList.add('visible');
+            else scrollToTopBtn.classList.remove('visible');
+        });
+
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 5000);
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

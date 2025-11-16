@@ -1,0 +1,516 @@
+{% extends "base.html" %}
+
+{% block title %}Donate - Support Our Cause - {{ site_info.name }}{% endblock %}
+
+{% block meta_description %}Support The Smiling Tear Foundation with your donation. Help us provide education, healthcare, and community development services.{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="py-20 bg-gradient-to-br from-yellow-50 to-orange-50">
+    <div class="container mx-auto px-6 text-center">
+        <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6">Support Our Cause</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Your generous donation helps us continue our mission to transform lives through education, healthcare, and community development
+        </p>
+    </div>
+</section>
+
+<!-- Donation Tiers -->
+<section class="py-20">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-800 mb-4">Choose Your Contribution</h2>
+            <p class="text-lg text-gray-600">Every amount makes a difference in someone's life</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {% for tier in donation_tiers %}
+            <div class="card-hover bg-white p-8 rounded-2xl shadow-lg text-center {% if tier.popular %}border-4 border-blue-500 relative transform scale-105{% endif %}">
+                {% if tier.popular %}
+                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white text-sm font-bold py-1 px-6 rounded-full">
+                    MOST POPULAR
+                </div>
+                {% endif %}
+                
+                <div class="w-20 h-20 bg-{{ tier.color }}-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas {{ tier.icon }} text-4xl text-{{ tier.color }}-600"></i>
+                </div>
+                
+                <h3 class="text-4xl font-bold text-gray-800 mb-2">{{ tier.amount|format_currency }}</h3>
+                <p class="text-xl font-semibold text-gray-700 mb-3">{{ tier.title }}</p>
+                <p class="text-gray-600 mb-6">{{ tier.description }}</p>
+                
+                <button class="btn-primary w-full" onclick="selectAmount({{ tier.amount }})">
+                    Donate {{ tier.amount|format_currency }}
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Custom Donation Form -->
+        <div class="bg-white rounded-2xl shadow-2xl p-8 md:p-12 max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold mb-2 text-center">Make a Custom Donation</h2>
+            <p class="text-gray-600 text-center mb-8">Choose any amount that works for you</p>
+            
+            <form id="mainDonationForm" method="POST" action="{{ url_for('donate') }}" class="space-y-6" onsubmit="return onProceed(event)">
+                <!-- Donation Amount -->
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Donation Amount (₹) *</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-3xl font-bold text-gray-400">₹</span>
+                        <input type="number" 
+                               name="amount" 
+                               id="donation-amount"
+                               class="w-full pl-12 pr-4 py-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-3xl font-bold text-gray-800" 
+                               placeholder="5000" 
+                               min="100" 
+                               required>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">Minimum donation: ₹100</p>
+                </div>
+
+                <!-- Quick Amount Buttons -->
+                <div class="grid grid-cols-4 gap-3">
+                    <button type="button" onclick="setAmount(500)" class="px-4 py-3 border-2 border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition font-semibold">
+                        ₹500
+                    </button>
+                    <button type="button" onclick="setAmount(1000)" class="px-4 py-3 border-2 border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition font-semibold">
+                        ₹1,000
+                    </button>
+                    <button type="button" onclick="setAmount(2500)" class="px-4 py-3 border-2 border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition font-semibold">
+                        ₹2,500
+                    </button>
+                    <button type="button" onclick="setAmount(5000)" class="px-4 py-3 border-2 border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition font-semibold">
+                        ₹5,000
+                    </button>
+                </div>
+
+                <!-- Program Selection -->
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Select Program</label>
+                    <select name="program" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="general">Where Most Needed</option>
+                        <option value="education">Education & Scholarship Program</option>
+                        <option value="healthcare">Healthcare & Wellness</option>
+                        <option value="skill-development">Skill Development</option>
+                        <option value="emergency">Emergency Relief Fund</option>
+                    </select>
+                </div>
+
+                <div class="border-t border-gray-200 pt-6">
+                    <h3 class="text-xl font-bold mb-4">Your Information</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Full Name *</label>
+                            <input type="text" 
+                                   name="name" 
+                                   id="donor-name"
+                                   class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                   placeholder="John Doe"
+                                   required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Email Address</label>
+                            <input type="email" 
+                                   name="email" 
+                                   id="donor-email"
+                                   class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                   placeholder="rahul@example.com (optional)">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Phone Number *</label>
+                            <input type="tel" 
+                                   name="phone" 
+                                   id="donor-phone"
+                                   class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                   placeholder="+91 98765 43210"
+                                   required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">PAN Number (for 80G)</label>
+                            <input type="text" 
+                                   name="pan" 
+                                   id="donor-pan"
+                                   class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                   placeholder="ABCDE1234F"
+                                   pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferences -->
+                <div class="bg-gray-50 p-6 rounded-lg space-y-3">
+                    <h3 class="font-bold text-gray-800 mb-3">Preferences</h3>
+                    
+                    <div class="flex items-start">
+                        <input type="checkbox" 
+                               name="anonymous" 
+                               id="anonymous" 
+                               class="mt-1 mr-3 w-5 h-5 text-blue-600">
+                        <label for="anonymous" class="text-gray-700">
+                            <span class="font-semibold">Make my donation anonymous</span>
+                            <p class="text-sm text-gray-500">Your name will not be displayed publicly</p>
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <input type="checkbox" 
+                               name="tax_benefit" 
+                               id="tax-benefit" 
+                               class="mt-1 mr-3 w-5 h-5 text-blue-600" 
+                               checked>
+                        <label for="tax-benefit" class="text-gray-700">
+                            <span class="font-semibold">I want to claim 80G tax benefits</span>
+                            <p class="text-sm text-gray-500">We'll email you the 80G certificate for tax exemption</p>
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <input type="checkbox" 
+                               name="newsletter" 
+                               id="newsletter" 
+                               class="mt-1 mr-3 w-5 h-5 text-blue-600" 
+                               checked>
+                        <label for="newsletter" class="text-gray-700">
+                            <span class="font-semibold">Send me updates about impact</span>
+                            <p class="text-sm text-gray-500">Get monthly updates on how your donation is making a difference</p>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full btn-primary text-xl py-5 flex items-center justify-center gap-3">
+                    <i class="fas fa-lock"></i>
+                    Proceed to Secure Payment
+                </button>
+                
+                <p class="text-center text-sm text-gray-500">
+                    <i class="fas fa-shield-alt mr-1"></i>
+                    All donations are secure and encrypted. 80G tax exemption certificate will be provided.
+                </p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Other Payment Methods -->
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Other Ways to Donate</h2>
+            <p class="text-lg text-gray-600">Choose the payment method that works best for you</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {% for method in payment_methods %}
+            <div class="bg-white p-8 rounded-2xl shadow-lg text-center card-hover">
+                <div class="w-20 h-20 bg-{{ method.color }}-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas {{ method.icon }} text-4xl text-{{ method.color }}-600"></i>
+                </div>
+                <h4 class="text-xl font-bold mb-3">{{ method.name }}</h4>
+                <p class="text-gray-600 mb-4">{{ method.description }}</p>
+                <button class="text-blue-600 font-semibold hover:underline">
+                    View Details →
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Bank Details Card (Hidden by default) -->
+        <div class="mt-12 max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+            <h3 class="text-2xl font-bold mb-6 text-center">Direct Bank Transfer Details</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <div class="text-sm text-gray-500 mb-1">Account Name</div>
+                    <div class="font-semibold text-gray-800">The Smiling Tear Foundation</div>
+                </div>
+                <div>
+                    <div class="text-sm text-gray-500 mb-1">Account Number</div>
+                    <div class="font-semibold text-gray-800">1234567890</div>
+                </div>
+                <div>
+                    <div class="text-sm text-gray-500 mb-1">Bank Name</div>
+                    <div class="font-semibold text-gray-800">HDFC Bank</div>
+                </div>
+                <div>
+                    <div class="text-sm text-gray-500 mb-1">IFSC Code</div>
+                    <div class="font-semibold text-gray-800">HDFC0001234</div>
+                </div>
+                <div>
+                    <div class="text-sm text-gray-500 mb-1">Branch</div>
+                    <div class="font-semibold text-gray-800">Connaught Place, New Delhi</div>
+                </div>
+                <div>
+                    <div class="text-sm text-gray-500 mb-1">UPI ID</div>
+                    <div class="font-semibold text-gray-800">thesmilingtear@hdfcbank</div>
+                </div>
+            </div>
+            <p class="text-sm text-gray-600 mt-6 text-center">
+                Please email us the transaction receipt at <a href="mailto:{{ contact_info.email }}" class="text-blue-600 hover:underline">{{ contact_info.email }}</a> to receive your 80G certificate
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Impact Statement -->
+<section class="py-20 animated-gradient text-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Your Donation Creates Real Impact</h2>
+            <p class="text-xl opacity-90 max-w-3xl mx-auto">
+                Every rupee you contribute goes directly towards our programs, helping us create lasting change in communities across India.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+            <div class="text-center">
+                <div class="text-5xl font-bold mb-3">₹500</div>
+                <div class="h-1 w-16 bg-white/50 mx-auto mb-3"></div>
+                <p class="opacity-90">Feeds 10 children for a day</p>
+            </div>
+            <div class="text-center">
+                <div class="text-5xl font-bold mb-3">₹2,000</div>
+                <div class="h-1 w-16 bg-white/50 mx-auto mb-3"></div>
+                <p class="opacity-90">Books & supplies for 1 student for a month</p>
+            </div>
+            <div class="text-center">
+                <div class="text-5xl font-bold mb-3">₹5,000</div>
+                <div class="h-1 w-16 bg-white/50 mx-auto mb-3"></div>
+                <p class="opacity-90">Health checkup for 20 families</p>
+            </div>
+            <div class="text-center">
+                <div class="text-5xl font-bold mb-3">₹10,000</div>
+                <div class="h-1 w-16 bg-white/50 mx-auto mb-3"></div>
+                <p class="opacity-90">Complete skill training workshop</p>
+            </div>
+        </div>
+
+        <div class="text-center mt-12">
+            <p class="text-xl opacity-90 mb-6">Every donation, no matter the size, helps us move closer to our goal</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{{ url_for('programs') }}" class="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition">
+                    See Our Programs
+                </a>
+                <a href="{{ url_for('about') }}" class="bg-yellow-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-600 transition">
+                    Learn More About Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQs -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-6 max-w-4xl">
+        <h2 class="text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+        
+        <div class="space-y-6">
+            <div class="border-b border-gray-200 pb-6">
+                <h3 class="text-xl font-bold mb-3">Is my donation tax-deductible?</h3>
+                <p class="text-gray-600">Yes! We are registered under Section 80G of the Income Tax Act. You can claim 50% tax deduction on your donation. We will email you the 80G certificate within 24 hours.</p>
+            </div>
+            
+            <div class="border-b border-gray-200 pb-6">
+                <h3 class="text-xl font-bold mb-3">How is my donation used?</h3>
+                <p class="text-gray-600">100% of your donation goes directly to our programs. We publish quarterly impact reports showing exactly how funds are utilized across education, healthcare, and community development initiatives.</p>
+            </div>
+            
+            <div class="border-b border-gray-200 pb-6">
+                <h3 class="text-xl font-bold mb-3">Is online donation secure?</h3>
+                <p class="text-gray-600">Absolutely! We use industry-standard encryption and secure payment gateways. Your financial information is never stored on our servers.</p>
+            </div>
+            
+            <div class="border-b border-gray-200 pb-6">
+                <h3 class="text-xl font-bold mb-3">Can I donate internationally?</h3>
+                <p class="text-gray-600">Yes, we accept international donations through our payment gateway. However, 80G tax benefits are only available for Indian taxpayers.</p>
+            </div>
+            
+            <div class="pb-6">
+                <h3 class="text-xl font-bold mb-3">Will I receive updates on how my donation is used?</h3>
+                <p class="text-gray-600">Yes! We send regular email updates with stories, photos, and impact reports showing how your donation is making a difference in people's lives.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Payment Options (hidden initially) -->
+<div id="payment-panel" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-20 px-4">
+  <div class="max-w-3xl w-full bg-white rounded-2xl shadow-2xl p-6 md:p-10">
+    <div class="flex justify-between items-start mb-4">
+      <h3 class="text-2xl font-bold">Complete Payment</h3>
+      <button onclick="closePaymentPanel()" class="text-gray-500 hover:text-gray-700">&times;</button>
+    </div>
+
+    <p class="text-gray-700 mb-4">Choose a payment method below. After paying in your app, click <strong>"I have completed payment"</strong> and enter the transaction ID to get your receipt.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- QR & UPI -->
+      <div class="bg-gray-50 p-4 rounded-lg text-center">
+        <img src="{{ url_for('static', filename='images/upi_qr.jpeg') }}" alt="UPI QR" class="mx-auto w-48 h-48 mb-3">
+        <div class="bg-white px-3 py-2 rounded inline-block">
+          <strong>UPI ID</strong> <span id="panel-upi" class="ml-2">9009664469@ybl</span>
+          <button onclick="copyUPI()" class="ml-3 text-blue-600 underline">Copy</button>
+        </div>
+
+        <div class="mt-4 flex flex-wrap justify-center gap-3">
+          <a id="panel-gpay" href="#" class="bg-blue-600 text-white px-5 py-3 rounded-lg">Google Pay</a>
+          <a id="panel-phonepe" href="#" class="bg-purple-600 text-white px-5 py-3 rounded-lg">PhonePe</a>
+          <a id="panel-paytm" href="#" class="bg-yellow-500 text-white px-5 py-3 rounded-lg">Paytm</a>
+        </div>
+      </div>
+
+      <!-- Bank & Confirmation -->
+      <div class="p-4 rounded-lg">
+        <h4 class="font-semibold mb-2">Direct Bank Transfer</h4>
+        <div class="text-sm text-gray-600 mb-4">
+          <div><strong>Account Name:</strong>SmilingTears Foundation</div>
+          <div><strong>Account Number:</strong> 1234567890</div>
+          <div><strong>Bank:</strong> HDFC Bank</div>
+          <div><strong>IFSC:</strong> HDFC0001234</div>
+          <div class="mt-2"><strong>UPI ID:</strong> 9009664469@ybl</div>
+        </div>
+
+        <hr class="my-4">
+
+        <h4 class="font-semibold mb-2">After Payment</h4>
+        <p class="text-sm text-gray-600 mb-3">Enter transaction/reference ID from your UPI app or bank transfer to generate your receipt.</p>
+
+        <div class="space-y-3">
+          <input id="confirm-name" class="w-full px-3 py-2 border rounded" placeholder="Full Name" />
+          <input id="confirm-email" class="w-full px-3 py-2 border rounded" placeholder="Email Address" />
+          <input id="confirm-phone" class="w-full px-3 py-2 border rounded" placeholder="Phone Number" />
+          <input id="confirm-amount" class="w-full px-3 py-2 border rounded" placeholder="Amount (₹)" readonly />
+          <input id="confirm-txn" class="w-full px-3 py-2 border rounded" placeholder="Transaction / UPI Reference ID" />
+          <div class="flex gap-3">
+            <button onclick="submitReceipt()" class="w-full bg-blue-600 text-white py-3 rounded">I have completed payment — Generate Receipt</button>
+            <button onclick="reportFailed()" class="w-full border border-gray-300 py-3 rounded">Payment failed / Cancelled</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript for Amount Selection and Payment Flow -->
+<script>
+function selectAmount(amount) {
+    document.getElementById('donation-amount').value = amount;
+    document.getElementById('donation-amount').focus();
+    
+    // Smooth scroll to form
+    document.getElementById('donation-amount').scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center' 
+    });
+    
+    // Add highlight effect
+    const input = document.getElementById('donation-amount');
+    input.classList.add('ring-4', 'ring-blue-300');
+    setTimeout(() => {
+        input.classList.remove('ring-4', 'ring-blue-300');
+    }, 2000);
+}
+
+function setAmount(amount) {
+    document.getElementById('donation-amount').value = amount;
+}
+
+// keep original form submission handler but intercept to show payment panel
+function onProceed(e) {
+    e.preventDefault();
+    const amount = parseInt(document.getElementById('donation-amount').value);
+    if (amount < 100 || isNaN(amount)) {
+        alert('Minimum donation amount is ₹100');
+        return false;
+    }
+    // populate confirmation panel fields
+    document.getElementById('confirm-amount').value = amount;
+    document.getElementById('confirm-name').value = document.getElementById('donor-name') ? document.getElementById('donor-name').value : '';
+    document.getElementById('confirm-email').value = document.getElementById('donor-email') ? document.getElementById('donor-email').value : '';
+    document.getElementById('confirm-phone').value = document.getElementById('donor-phone') ? document.getElementById('donor-phone').value : '';
+    openPaymentPanel();
+    updateDeepLinks(amount);
+    return false;
+}
+
+function openPaymentPanel() {
+    document.getElementById('payment-panel').classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closePaymentPanel() {
+    document.getElementById('payment-panel').classList.add('hidden');
+}
+
+function updateDeepLinks(amount) {
+    const upi = encodeURIComponent('9009664469@ybl');
+    const pn = encodeURIComponent('SmilingTearFoundation');
+    const am = encodeURIComponent(amount);
+    // UPI Intent format
+    const link = `upi://pay?pa=${upi}&pn=${pn}&am=${am}&cu=INR`;
+    // For mobile apps, clicking these links should open respective UPI app
+    document.getElementById('panel-gpay').href = link;
+    document.getElementById('panel-phonepe').href = link;
+    document.getElementById('panel-paytm').href = link;
+
+    // also allow opening in same window on mobile (target _self)
+    document.getElementById('panel-gpay').setAttribute('target','_self');
+    document.getElementById('panel-phonepe').setAttribute('target','_self');
+    document.getElementById('panel-paytm').setAttribute('target','_self');
+}
+
+function copyUPI() {
+    navigator.clipboard.writeText("9009664469@ybl");
+    alert("UPI ID copied!");
+}
+
+function submitReceipt() {
+    // gather details and POST to server to generate receipt PDF
+    const name = document.getElementById('confirm-name').value.trim();
+    const email = document.getElementById('confirm-email').value.trim();
+    const phone = document.getElementById('confirm-phone').value.trim();
+    const amount = document.getElementById('confirm-amount').value.trim();
+    const txn = document.getElementById('confirm-txn').value.trim();
+
+    if (!name || !email || !phone || !amount || !txn) {
+        alert('Please fill name, email, phone, amount and transaction ID to generate receipt.');
+        return;
+    }
+
+    // create form and submit to /generate_receipt to get PDF
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '{{ url_for('donate') }}';
+    form.target = '_blank'; // open receipt in new tab (download)
+    const fields = { name, email, phone, amount, txn, program: (document.querySelector('select[name="program"]') ? document.querySelector('select[name="program"]').value : '') };
+    for (const k in fields) {
+        const inp = document.createElement('input');
+        inp.type = 'hidden';
+        inp.name = k;
+        inp.value = fields[k];
+        form.appendChild(inp);
+    }
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+    closePaymentPanel();
+}
+
+function reportFailed() {
+    closePaymentPanel();
+    alert('Payment was not completed. Please try again or contact us at {{ contact_info.email }}');
+}
+
+// keep the original inline form validation for the rest of the page
+document.querySelectorAll('form')[0].addEventListener('submit', function(e) {
+    // already handled via onProceed
+});
+</script>
+
+{% endblock %}

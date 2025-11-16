@@ -1,0 +1,45 @@
+<!-- templates/about.html -->
+{% extends "base.html" %}
+
+{% block title %}About Us - {{ site_info.name }}{% endblock %}
+
+{% block content %}
+<section class="py-20 bg-gradient-to-br from-blue-50 to-green-50">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+            <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6">About Us</h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Dedicated to creating lasting positive change in communities across India
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
+            <div>
+                <h2 class="text-4xl font-bold mb-6">Our Story</h2>
+                <p class="text-gray-600 mb-4 text-lg">{{ about.story }}</p>
+            </div>
+            <div class="h-96 rounded-2xl shadow-xl bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center"><img src="{{ url_for('static', filename='images/about/about.jpg') }}" 
+         alt="Smiling" 
+         class="h-80 object-contain rounded-2xl"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-2xl shadow-lg">
+                <i class="fas fa-eye text-5xl text-blue-600 mb-4"></i>
+                <h3 class="text-2xl font-bold mb-4">Our Vision</h3>
+                <p class="text-gray-600">{{ about.vision }}</p>
+            </div>
+            <div class="bg-white p-8 rounded-2xl shadow-lg">
+                <i class="fas fa-bullseye text-5xl text-green-600 mb-4"></i>
+                <h3 class="text-2xl font-bold mb-4">Our Mission</h3>
+                <p class="text-gray-600">{{ about.mission }}</p>
+            </div>
+            <div class="bg-white p-8 rounded-2xl shadow-lg">
+                <i class="fas fa-heart text-5xl text-red-600 mb-4"></i>
+                <h3 class="text-2xl font-bold mb-4">Our Values</h3>
+                <p class="text-gray-600">{{ about.values }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

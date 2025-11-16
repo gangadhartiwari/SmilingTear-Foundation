@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+
+{% block title %}Blog - Stories & Updates - {{ site_info.name }}{% endblock %}
+
+{% block meta_description %}Read inspiring stories, success stories, and updates from The Smiling Tear Foundation. Learn about our impact in education, healthcare, and community development.{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="py-20 bg-gradient-to-br from-purple-50 via-blue-50 to-green-50">
+    <div class="container mx-auto px-6 text-center">
+        <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6">Our Blog</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Stories of hope, change, and impact from the field. Follow our journey in transforming lives.
+        </p>
+    </div>
+</section>
+
+<!-- Category Filter -->
+<section class="py-8 bg-white border-b border-gray-200 sticky top-20 z-40">
+    <div class="container mx-auto px-6">
+        <div class="flex flex-wrap justify-center gap-3">
+            <a href="{{ url_for('blog') }}" 
+               class="px-6 py-2 rounded-full font-semibold transition {% if not selected_category %}bg-blue-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+                All Posts
+            </a>
+            <a href="{{ url_for('blog', category='success-stories') }}" 
+               class="px-6 py-2 rounded-full font-semibold transition {% if selected_category == 'success-stories' %}bg-blue-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+                Success Stories
+            </a>
+            <a href="{{ url_for('blog', category='program-updates') }}" 
+               class="px-6 py-2 rounded-full font-semibold transition {% if selected_category == 'program-updates' %}bg-blue-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+                Program Updates
+            </a>
+            <a href="{{ url_for('blog', category='volunteer-stories') }}" 
+               class="px-6 py-2 rounded-full font-semibold transition {% if selected_category == 'volunteer-stories' %}bg-blue-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+                Volunteer Stories
+            </a>
+            <a href="{{ url_for('blog', category='reports') }}" 
+               class="px-6 py-2 rounded-full font-semibold transition {% if selected_category == 'reports' %}bg-blue-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+                Reports
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Post (First Post) -->
+{% if posts and posts|length > 0 %}
+<section class="py-12">
+    <div class="container mx-auto px-6">
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2">
+                <div class="h-96 lg:h-auto">
+                    <img src="{{ url_for('static', filename=posts[0].featuredImage.featured) }}" 
+                         alt="{{ posts[0].title }}" 
+                         class="w-full h-full object-cover"
+                         onerror="this.style.display='none'; this.parentElement.style.background='{{ posts[0].backgroundColor }}';">
+                </div>
+                <div class="p-8 lg:p-12 flex flex-col justify-center">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
+                            Featured Post
+                        </span>
+                        <span class="text-gray-500 text-sm">
+                            <i class="far fa-calendar mr-2"></i>{{ posts[0].displayDate }}
+                        </span>
+                    </div>
+                    <h2 class="text-4xl font-bold mb-4 hover:text-blue-600">
+                        <a href="{{ url_for('blog_detail', slug=posts[0].slug) }}">
+                            {{ posts[0].title }}
+                        </a>
+                    </h2>
+                    <p class="text-gray-600 text-lg mb-6">{{ posts[0].excerpt }}</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <span class="text-sm text-gray-500">
+                                <i class="fas fa-clock mr-1"></i>{{ posts[0].readTime }} min read
+                            </span>
+                            <span class="text-sm text-gray-500">
+                                <i class="fas fa-eye mr-1"></i>{{ posts[0].views }} views
+                            </span>
+                        </div>
+                        <a href="{{ url_for('blog_detail', slug=posts[0].slug) }}" 
+                           class="btn-primary">
+                            Read More
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Blog Posts Grid -->
+<section class="py-12 bg-gray-50">
+    <div class="container mx-auto px-6">
+        {% if selected_category %}
+        <div class="mb-8 text-center">
+            <h2 class="text-3xl font-bold mb-2">{{ selected_category|replace('-', ' ')|title }}</h2>
+            <p class="text-gray-600">Showing posts in this category</p>
+        </div>
+        {% endif %}
+
+        {% if posts|length > 1 %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for post in posts[1:] %}
+            <article class="card-hover bg-white rounded-2xl overflow-hidden shadow-lg group">
+                <div class="h-56 overflow-hidden relative">
+                    <img src="{{ url_for('static', filename=post.featuredImage.thumbnail) }}" 
+                         alt="{{ post.title }}" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                         onerror="this.style.display='none'; this.parentElement.style.background='{{ post.backgroundColor }}';">
+                    <div class="absolute top-4 right-4">
+                        <span class="px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-800 rounded-full text-xs font-semibold">
+                            {{ post.category|replace('-', ' ')|title }}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                        <span class="flex items-center">
+                            <i class="far fa-calendar mr-2"></i>
+                            {{ post.displayDate }}
+                        </span>
+                        <span class="flex items-center">
+                            <i class="fas fa-clock mr-1"></i>
+                            {{ post.readTime }} min
+                        </span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold mb-3 line-clamp-2 group-hover:text-blue-600 transition">
+                        <a href="{{ url_for('blog_detail', slug=post.slug) }}">
+                            {{ post.title }}
+                        </a>
+                    </h3>
+                    
+                    <p class="text-gray-600 mb-4 line-clamp-3">{{ post.excerpt }}</p>
+                    
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                        <div class="flex items-center gap-4 text-sm text-gray-500">
+                            <span>
+                                <i class="fas fa-eye mr-1"></i>{{ post.views }}
+                            </span>
+                            <span>
+                                <i class="fas fa-heart mr-1"></i>{{ post.likes }}
+                            </span>
+                        </div>
+                        <a href="{{ url_for('blog_detail', slug=post.slug) }}" 
+                           class="text-blue-600 font-semibold hover:underline flex items-center">
+                            Read More 
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% elif posts|length == 0 %}
+        <!-- No Posts Message -->
+        <div class="text-center py-20">
+            <div class="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-inbox text-5xl text-gray-400"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">No posts found</h3>
+            <p class="text-gray-600 mb-6">
+                {% if selected_category %}
+                There are no posts in this category yet.
+                {% else %}
+                We haven't published any blog posts yet. Check back soon!
+                {% endif %}
+            </p>
+            {% if selected_category %}
+            <a href="{{ url_for('blog') }}" class="btn-primary">
+                View All Posts
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Newsletter Subscription -->
+<section class="py-20 bg-gradient-to-br from-blue-600 to-green-600 text-white">
+    <div class="container mx-auto px-6 text-center">
+        <div class="max-w-2xl mx-auto">
+            <i class="fas fa-envelope-open-text text-6xl mb-6 opacity-90"></i>
+            <h2 class="text-4xl font-bold mb-4">Stay Updated</h2>
+            <p class="text-xl opacity-90 mb-8">
+                Subscribe to our newsletter and get the latest stories, updates, and impact reports directly in your inbox.
+            </p>
+            
+            <form method="POST" action="{{ url_for('index') }}" class="max-w-md mx-auto">
+                <div class="flex gap-3">
+                    <input type="email" 
+                           name="newsletter_email" 
+                           placeholder="Enter your email address" 
+                           class="flex-1 px-6 py-4 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-white/50"
+                           required>
+                    <button type="submit" 
+                            class="bg-yellow-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-yellow-600 transition whitespace-nowrap">
+                        Subscribe
+                    </button>
+                </div>
+                <p class="text-sm opacity-75 mt-4">
+                    We respect your privacy. Unsubscribe anytime.
+                </p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Blog Stats -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center mb-12">Our Blog by Numbers</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto text-center">
+            <div>
+                <div class="text-5xl font-bold text-blue-600 mb-2">{{ posts|length }}+</div>
+                <div class="text-gray-600">Stories Published</div>
+            </div>
+            <div>
+                <div class="text-5xl font-bold text-green-600 mb-2">
+                    {% set total_views = posts|sum(attribute='views') %}
+                    {{ total_views|default(0) }}+
+                </div>
+                <div class="text-gray-600">Total Views</div>
+            </div>
+            <div>
+                <div class="text-5xl font-bold text-yellow-600 mb-2">
+                    {% set total_likes = posts|sum(attribute='likes') %}
+                    {{ total_likes|default(0) }}+
+                </div>
+                <div class="text-gray-600">Hearts Received</div>
+            </div>
+            <div>
+                <div class="text-5xl font-bold text-purple-600 mb-2">
+                    {% set categories = posts|map(attribute='category')|unique|list %}
+                    {{ categories|length }}
+                </div>
+                <div class="text-gray-600">Categories</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Tags -->
+{% if posts|length > 0 %}
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl font-bold mb-8">Popular Tags</h2>
+        <div class="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
+            {% set all_tags = [] %}
+            {% for post in posts %}
+                {% for tag in post.tags %}
+                    {% if all_tags.append(tag) %}{% endif %}
+                {% endfor %}
+            {% endfor %}
+            
+            {% for tag in all_tags|unique %}
+            <span class="px-6 py-3 bg-white rounded-full shadow-md hover:shadow-lg transition cursor-pointer hover:bg-blue-50">
+                <i class="fas fa-tag text-blue-600 mr-2"></i>
+                {{ tag|replace('-', ' ')|title }}
+            </span>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Call to Action -->
+<section class="py-20 animated-gradient text-white">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">Inspired by Our Stories?</h2>
+        <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+            Join us in creating more success stories. Your support can transform lives.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{{ url_for('volunteer') }}" 
+               class="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition">
+                Become a Volunteer
+            </a>
+            <a href="{{ url_for('donate') }}" 
+               class="bg-yellow-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-600 transition">
+                Make a Donation
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Additional Styling -->
+<style>
+.line-clamp-2 {
+    display: -webkit-box;
+    display: box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    display: box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+    overflow: hidden;
+}
+
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+{
+  "programs": [
+    {
+      "title": "Environmental Sustainability",
+      "slug": "environmental-sustainability",
+      "category": "environment",
+      "description": "Creating cleaner, greener communities through tree plantations, waste management, and eco-awareness drives.",
+      "featuredImage": "environment.jpg",
+      "iconColor": "green",
+      "backgroundColor": "#DCFCE7",
+      "features": [
+        "Tree plantation and cleanliness drives",
+        "Waste segregation awareness sessions",
+        "Eco-friendly product promotion campaigns"
+      ],
+      "impact": {
+        "trees_planted": 5000,
+        "villages_cleaned": 20,
+        "volunteers_involved": 300
+      }
+    },
+    {
+      "title": "Education for All",
+      "slug": "education-for-all",
+      "category": "education",
+      "description": "Empowering underprivileged children with access to quality education and digital learning tools.",
+      "featuredImage": "education.jpg",
+      "iconColor": "blue",
+      "backgroundColor": "#E0F2FE",
+      "features": [
+        "Free tuition and learning materials",
+        "Digital literacy and smart classroom setup",
+        "Scholarship and mentorship programs"
+      ],
+      "impact": {
+        "children_educated": 600,
+        "learning_centers": 10,
+        "teachers_trained": 45
+      }
+    },
+    {
+      "title": "Health & Wellness",
+      "slug": "health-and-wellness",
+      "category": "health",
+      "description": "Promoting healthy living through medical camps, nutrition education, and wellness awareness campaigns.",
+      "featuredImage": "health.jpg",
+      "iconColor": "teal",
+      "backgroundColor": "#CCFBF1",
+      "features": [
+        "Regular medical camps for rural communities",
+        "Nutrition and hygiene awareness sessions",
+        "Health kit and medicine distribution"
+      ],
+      "impact": {
+        "patients_served": 1800,
+        "health_camps": 35,
+        "villages_covered": 25
+      }
+    },
+    {
+      "title": "Women Empowerment",
+      "slug": "women-empowerment",
+      "category": "empowerment",
+      "description": "Supporting women’s growth through skill development, financial literacy, and entrepreneurship programs.",
+      "featuredImage": "empowerment.jpg",
+      "iconColor": "pink",
+      "backgroundColor": "#FCE7F3",
+      "features": [
+        "Vocational training and self-help groups",
+        "Microfinance and small business mentoring",
+        "Workshops on gender equality and rights"
+      ],
+      "impact": {
+        "women_trained": 250,
+        "microloans_disbursed": 50,
+        "businesses_started": 40
+      }
+    }
+  ]
+}

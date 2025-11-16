@@ -1,0 +1,127 @@
+{
+  "siteInfo": {
+    "name": "SmilingTears Foundation",
+    "tagline": "Empowering Lives Through Education & Healthcare",
+    "description": "Dedicated to creating lasting positive change in communities across India",
+    "foundedYear": 2025
+  },
+  "contact": {
+    "email": "smilingtearsfoundation@gmail.com",
+    "phone": "+91 8982269317",
+    "address": {
+      "city": "New Delhi",
+      "state": "Delhi",
+      "country": "India"
+    }
+  },
+  "socialMedia": {
+    "facebook": "https://facebook.com/thesmilingtear",
+    "instagram": "https://instagram.com/thesmilingtear",
+    "linkedin": "https://linkedin.com/company/thesmilingtear",
+    "twitter": "https://twitter.com/thesmilingtear"
+  },
+  "stats": {
+    "livesImpacted": 10000,
+    "programsRunning": 50,
+    "volunteers": 500,
+    "partnerOrganizations": 25
+  },
+  "hero": {
+    "title": "Transforming Lives Through",
+    "highlightText": "Education & Healthcare",
+    "subtitle": "Join us in making a difference. Every smile counts, every tear matters.",
+    "backgroundImage": "images/hero/hero-bg-1.jpg",
+    "ctaButtons": [
+      {
+        "text": "Get Involved",
+        "link": "/volunteer",
+        "type": "primary"
+      },
+      {
+        "text": "Learn More",
+        "link": "/about",
+        "type": "secondary"
+      }
+    ]
+  },
+  "mission": {
+    "title": "Our Mission",
+    "description": "Empowering underprivileged communities through quality education, healthcare access, and sustainable development initiatives.",
+    "values": [
+      {
+        "icon": "fa-graduation-cap",
+        "title": "Education First",
+        "description": "Providing quality education and learning resources to children from underprivileged backgrounds.",
+        "color": "blue"
+      },
+      {
+        "icon": "fa-heartbeat",
+        "title": "Healthcare Access",
+        "description": "Ensuring basic healthcare services reach those who need it most.",
+        "color": "green"
+      },
+      {
+        "icon": "fa-hands-helping",
+        "title": "Community Development",
+        "description": "Building sustainable communities through skill development programs.",
+        "color": "yellow"
+      }
+    ]
+  },
+  "about": {
+    "vision": "A world where every individual has equal access to education, healthcare, and opportunities.",
+    "mission": "Empowering communities through sustainable programs in education, healthcare, and skill development.",
+    "values": "Compassion, integrity, transparency, and unwavering commitment to social change.",
+    "story": "The Smiling Tear Foundation was born from a simple belief: that every child deserves access to quality education and healthcare, regardless of their economic background."
+  },
+  "donationTiers": [
+    {
+      "amount": 2000,
+      "title": "Education Supporter",
+      "description": "Sponsors one student's education for a month",
+      "icon": "fa-graduation-cap",
+      "color": "blue"
+    },
+    {
+      "amount": 5000,
+      "title": "Healthcare Champion",
+      "description": "Provides healthcare for 20 families",
+      "icon": "fa-heartbeat",
+      "color": "green",
+      "popular": true
+    },
+    {
+      "amount": 10000,
+      "title": "Community Builder",
+      "description": "Funds a complete skill development workshop",
+      "icon": "fa-hands-helping",
+      "color": "yellow"
+    }
+  ],
+  "volunteerBenefits": [
+    {
+      "icon": "fa-heart",
+      "title": "Make a Real Impact",
+      "description": "Directly contribute to changing lives in your community",
+      "color": "red"
+    },
+    {
+      "icon": "fa-users",
+      "title": "Meet Like-Minded People",
+      "description": "Connect with passionate individuals who share your values",
+      "color": "blue"
+    },
+    {
+      "icon": "fa-star",
+      "title": "Gain New Skills",
+      "description": "Develop leadership, communication, and organizational skills",
+      "color": "yellow"
+    },
+    {
+      "icon": "fa-smile",
+      "title": "Personal Fulfillment",
+      "description": "Experience the joy of giving back to society",
+      "color": "green"
+    }
+  ]
+}

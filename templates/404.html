@@ -1,0 +1,73 @@
+!-- templates/404.html -->
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - {{ site_info.name }}{% endblock %}
+
+{% block content %}
+<section class="py-20 min-h-screen flex items-center bg-gradient-to-br from-blue-50 to-purple-50">
+    <div class="container mx-auto px-6 text-center">
+        <div class="max-w-2xl mx-auto">
+            <div class="mb-8">
+                <div class="text-9xl font-bold text-blue-600 mb-4 animate-bounce">404</div>
+                <div class="w-32 h-1 bg-gradient-to-r from-blue-600 to-green-600 mx-auto mb-8"></div>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Oops! Page Not Found</h1>
+            <p class="text-xl text-gray-600 mb-8">
+                Sorry, the page you're looking for doesn't exist or has been moved.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <a href="{{ url_for('index') }}" class="btn-primary text-lg px-8 py-4">
+                    <i class="fas fa-home mr-2"></i>
+                    Go to Homepage
+                </a>
+                <a href="{{ url_for('contact') }}" class="btn-secondary text-lg px-8 py-4">
+                    <i class="fas fa-envelope mr-2"></i>
+                    Contact Us
+                </a>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <h3 class="text-xl font-bold mb-4">You might be looking for:</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <a href="{{ url_for('about') }}" class="text-blue-600 hover:underline">
+                        <i class="fas fa-info-circle mr-2"></i>About Us
+                    </a>
+                    <a href="{{ url_for('programs') }}" class="text-blue-600 hover:underline">
+                        <i class="fas fa-heart mr-2"></i>Programs
+                    </a>
+                    <a href="{{ url_for('events') }}" class="text-blue-600 hover:underline">
+                        <i class="fas fa-calendar mr-2"></i>Events
+                    </a>
+                    <a href="{{ url_for('blog') }}" class="text-blue-600 hover:underline">
+                        <i class="fas fa-blog mr-2"></i>Blog
+                    </a>
+                    <a href="{{ url_for('volunteer') }}" class="text-blue-600 hover:underline">
+                        <i class="fas fa-hands-helping mr-2"></i>Volunteer
+                    </a>
+                    <a href="{{ url_for('donate') }}" class="text-blue-600 hover:underline">
+                        <i class="fas fa-donate mr-2"></i>Donate
+                    </a>
+                    <a href="{{ url_for('contact') }}" class="text-blue-600 hover:underline">
+                        <i class="fas fa-envelope mr-2"></i>Contact
+                    </a>
+                    <a href="{{ url_for('index') }}" class="text-blue-600 hover:underline">
+                        <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+.animate-bounce {
+    animation: bounce 2s infinite;
+}
+</style>
+{% endblock %}

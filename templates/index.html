@@ -1,0 +1,261 @@
+{% extends "base.html" %} {% block title %}{{ site_info.name }} - {{
+site_info.tagline }}{% endblock %} {% block content %}
+<!-- Hero Section -->
+<section
+  class="relative h-screen overflow-hidden"
+  style="background: url('{{ url_for('static', filename=hero.backgroundImage) }}')
+ center/cover no-repeat;"
+>
+  <div
+    class="absolute inset-0 bg-gradient-to-r from-blue-900/85 to-green-900/75"
+  ></div>
+  <div
+    class="relative z-10 flex items-center justify-center h-full text-white text-center px-6"
+  >
+    <div class="max-w-4xl">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
+        {{ hero.title }}<br />
+        <span class="text-yellow-300">{{ hero.highlightText }}</span>
+      </h1>
+      <p class="text-xl md:text-2xl mb-8 opacity-90">{{ hero.subtitle }}</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        {% for button in hero.ctaButtons %}
+        <a
+          href="{{ button.link }}"
+          class="btn-{{ button.type }} text-lg px-8 py-4"
+        >
+          {{ button.text }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Impact Stats -->
+<section class="py-20 bg-gradient-to-r from-blue-600 to-green-500 text-white">
+  <div class="container mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+      <div class="card-hover p-6 rounded-lg bg-white bg-opacity-10">
+        <div class="text-5xl font-bold mb-2">
+          {{ stats.livesImpacted|format_currency }}+
+        </div>
+        <p class="text-lg">Lives Impacted</p>
+      </div>
+      <div class="card-hover p-6 rounded-lg bg-white bg-opacity-10">
+        <div class="text-5xl font-bold mb-2">{{ stats.programsRunning }}+</div>
+        <p class="text-lg">Programs Running</p>
+      </div>
+      <div class="card-hover p-6 rounded-lg bg-white bg-opacity-10">
+        <div class="text-5xl font-bold mb-2">{{ stats.volunteers }}+</div>
+        <p class="text-lg">Volunteers</p>
+      </div>
+      <div class="card-hover p-6 rounded-lg bg-white bg-opacity-10">
+        <div class="text-5xl font-bold mb-2">
+          {{ stats.partnerOrganizations }}+
+        </div>
+        <p class="text-lg">Partner Organizations</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mission Section -->
+<section class="py-20 bg-gray-50">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+        {{ mission.title }}
+      </h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        {{ mission.description }}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {% for value in mission['values'] %}
+      <div class="card-hover bg-white p-8 rounded-2xl shadow-lg text-center">
+        <div
+          class="w-20 h-20 bg-{{ value.color }}-100 rounded-full flex items-center justify-center mx-auto mb-6"
+        >
+          <i
+            class="fas {{ value.icon }} text-4xl text-{{ value.color }}-600"
+          ></i>
+        </div>
+        <h3 class="text-2xl font-bold mb-4">{{ value.title }}</h3>
+        <p class="text-gray-600">{{ value.description }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Featured Programs -->
+<section class="py-20">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+        Our Programs
+      </h2>
+      <p class="text-xl text-gray-600">
+        Making a real difference in people's lives
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {% for program in featured_programs %}
+      <div class="card-hover rounded-2xl overflow-hidden shadow-lg">
+        <div
+          class="h-64 bg-cover bg-center"
+          style="background: {{ program.backgroundColor }}; background-image: url('{{ url_for('static', filename='images/programs/' + program.featuredImage) }}');"
+        ></div>
+        <div class="p-8 bg-white">
+          <h3 class="text-2xl font-bold mb-4">{{ program.title }}</h3>
+          <p class="text-gray-600 mb-4">{{ program.shortDescription }}</p>
+          <a
+            href="{{ url_for('program_detail', slug=program.slug) }}"
+            class="text-blue-600 font-semibold hover:underline"
+          >
+            Learn More →
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-12">
+      <a href="{{ url_for('programs') }}" class="btn-primary text-lg px-8 py-4">
+        View All Programs
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Upcoming Events -->
+{% if upcoming_events %}
+<section class="py-20 bg-gray-50">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+        Upcoming Events
+      </h2>
+      <p class="text-xl text-gray-600">Join us in making a difference</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {% for event in upcoming_events %}
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-lg">
+        <div
+          class="h-48 bg-cover bg-center"
+          style="background: {{ event.backgroundColor }}; background-image: url('{{ url_for('static', filename='images/events/' + event.image) }}');"
+        ></div>
+        <div class="p-6">
+          <div
+            class="text-sm text-{{ event.badgeColor }}-600 font-semibold mb-2"
+          >
+            {{ event.status|title }}
+          </div>
+          <h3 class="text-2xl font-bold mb-3">{{ event.title }}</h3>
+          <p class="text-gray-600 mb-4">{{ event.description }}</p>
+          <div class="flex items-center text-gray-500 text-sm mb-4">
+            <i class="far fa-calendar mr-2"></i>
+            <span>{{ event.displayDate }}</span>
+          </div>
+          <a
+            href="{{ url_for('event_detail', slug=event.slug) }}"
+            class="text-blue-600 font-semibold hover:underline"
+          >
+            View Details →
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-12">
+      <a href="{{ url_for('events') }}" class="btn-primary text-lg px-8 py-4">
+        View All Events
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Latest Blog Posts -->
+{% if latest_posts %}
+<section class="py-20">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+        Latest Stories
+      </h2>
+      <p class="text-xl text-gray-600">Updates from the field</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {% for post in latest_posts %}
+      <article
+        class="card-hover bg-white rounded-2xl overflow-hidden shadow-lg"
+      >
+        <div
+          class="h-56 bg-cover bg-center"
+          style="background: {{ post.backgroundColor }}; background-image: url('{{ url_for('static', filename=post.featuredImage.thumbnail) }}');"
+        ></div>
+        <div class="p-6">
+          <div class="flex items-center text-sm text-gray-500 mb-3">
+            <i class="far fa-calendar mr-2"></i>
+            <span>{{ post.displayDate }}</span>
+          </div>
+          <h3 class="text-2xl font-bold mb-3 hover:text-blue-600">
+            <a href="{{ url_for('blog_detail', slug=post.slug) }}"
+              >{{ post.title }}</a
+            >
+          </h3>
+          <p class="text-gray-600 mb-4">{{ post.excerpt }}</p>
+          <a
+            href="{{ url_for('blog_detail', slug=post.slug) }}"
+            class="text-blue-600 font-semibold hover:underline"
+          >
+            Read More →
+          </a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-12">
+      <a href="{{ url_for('blog') }}" class="btn-primary text-lg px-8 py-4">
+        View All Stories
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Call to Action -->
+<section class="py-20 animated-gradient text-white">
+  <div class="container mx-auto px-6 text-center">
+    <h2 class="text-4xl md:text-5xl font-bold mb-6">
+      Be the Change You Want to See
+    </h2>
+    <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+      Your support can transform lives. Join us in our mission to create a
+      better tomorrow.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a
+        href="{{ url_for('volunteer') }}"
+        class="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition"
+      >
+        Volunteer With Us
+      </a>
+      <a
+        href="{{ url_for('donate') }}"
+        class="bg-yellow-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-600 transition"
+      >
+        Make a Donation
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

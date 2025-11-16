@@ -1,0 +1,44 @@
+{
+  "events": [
+    {
+      "title": "Winter Clothes Donation Drive",
+      "date": "2025-11-15",
+      "location": "Community Hall, Lucknow",
+      "description": "Join us in distributing warm clothes and blankets to underprivileged families as winter approaches. Volunteers and donors are welcome!",
+      "image": "winter_drive.jpg",
+      "status": "upcoming"
+    },
+    {
+      "title": "Health Awareness Camp",
+      "date": "2025-12-05",
+      "location": "Government Primary School, Varanasi",
+      "description": "A free health check-up and awareness session for rural children and women. Includes eye checkups, blood pressure testing, and nutrition counseling.",
+      "image": "health_camp.jpg",
+      "status": "upcoming"
+    },
+    {
+      "title": "Education for All Workshop",
+      "date": "2025-09-10",
+      "location": "Smiling Tear Learning Center, Kanpur",
+      "description": "Interactive workshop for parents and teachers to promote equal access to education. Focuses on encouraging girl child education and digital learning.",
+      "image": "education_workshop.jpg",
+      "status": "past"
+    },
+    {
+      "title": "Clean Village Campaign",
+      "date": "2025-08-20",
+      "location": "Rural Development Block, Unnao",
+      "description": "A cleanliness drive under the 'Green & Clean India' initiative. Volunteers planted trees and cleaned local community areas.",
+      "image": "clean_village.jpg",
+      "status": "past"
+    },
+    {
+      "title": "Annual Foundation Day Celebration",
+      "date": "2026-03-15",
+      "location": "Smiling Tear Auditorium, Lucknow",
+      "description": "Celebrate our foundation’s journey with performances, awards, and success stories from our volunteers and beneficiaries.",
+      "image": "foundation_day.jpg",
+      "status": "upcoming"
+    }
+  ]
+}

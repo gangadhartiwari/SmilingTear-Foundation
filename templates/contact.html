@@ -1,0 +1,482 @@
+{% extends "base.html" %} {% block title %}Contact Us - Get In Touch - {{
+site_info.name }}{% endblock %} {% block meta_description %}Contact The Smiling
+Tear Foundation. Get in touch with us for inquiries, volunteer opportunities,
+donations, or partnerships.{% endblock %} {% block content %}
+<!-- Page Header -->
+<section class="py-20 bg-gradient-to-br from-blue-50 to-green-50">
+  <div class="container mx-auto px-6 text-center">
+    <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6">
+      Get In Touch
+    </h1>
+    <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+      Have questions or want to get involved? We'd love to hear from you!
+    </p>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-20">
+  <div class="container mx-auto px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <!-- Contact Form -->
+      <div class="bg-white rounded-2xl shadow-xl p-8 lg:p-10">
+        <div class="mb-8">
+          <h2 class="text-3xl font-bold mb-2">Send Us a Message</h2>
+          <p class="text-gray-600">
+            Fill out the form below and we'll get back to you within 24 hours.
+          </p>
+        </div>
+
+        <form method="POST" action="{{ url_for('contact') }}" class="space-y-6">
+          <div>
+            <label class="block text-gray-700 font-medium mb-2">
+              Full Name <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="name"
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              placeholder="John Doe"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-medium mb-2">
+              Email Address <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="email"
+              name="email"
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              placeholder="john@example.com"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-medium mb-2">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              name="phone"
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              placeholder="+91 98765 43210"
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-medium mb-2">
+              Subject
+            </label>
+            <select
+              name="subject"
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+            >
+              <option value="general">General Inquiry</option>
+              <option value="volunteer">Volunteer Opportunity</option>
+              <option value="donation">Donation Information</option>
+              <option value="partnership">Partnership</option>
+              <option value="media">Media Inquiry</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-medium mb-2">
+              Message <span class="text-red-500">*</span>
+            </label>
+            <textarea
+              rows="6"
+              name="message"
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+              placeholder="How can we help you?"
+              required
+            ></textarea>
+            <p class="text-sm text-gray-500 mt-2">
+              Please provide as much detail as possible
+            </p>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full btn-primary text-lg py-4 flex items-center justify-center gap-2"
+          >
+            <i class="fas fa-paper-plane"></i>
+            Send Message
+          </button>
+
+          <p class="text-sm text-gray-500 text-center">
+            <i class="fas fa-lock mr-1"></i>
+            Your information is secure and will never be shared.
+          </p>
+        </form>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="space-y-8">
+        <!-- Contact Info Card -->
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+          <h2 class="text-3xl font-bold mb-6">Contact Information</h2>
+          <p class="text-gray-600 mb-8">
+            Feel free to reach out to us through any of these channels. We're
+            here to help!
+          </p>
+
+          <div class="space-y-6">
+            <div class="flex items-start group">
+              <div
+                class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600 transition"
+              >
+                <i
+                  class="fas fa-map-marker-alt text-blue-600 text-xl group-hover:text-white transition"
+                ></i>
+              </div>
+              <div class="ml-4">
+                <h3 class="font-semibold text-gray-800 mb-1 text-lg">
+                  Our Address
+                </h3>
+                <p class="text-gray-600">
+                  {{ contact_info.address.city }}, {{ contact_info.address.state
+                  }}
+                </p>
+                <p class="text-gray-600">{{ contact_info.address.country }}</p>
+              </div>
+            </div>
+
+            <div class="flex items-start group">
+              <div
+                class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-green-600 transition"
+              >
+                <i
+                  class="fas fa-phone text-green-600 text-xl group-hover:text-white transition"
+                ></i>
+              </div>
+              <div class="ml-4">
+                <h3 class="font-semibold text-gray-800 mb-1 text-lg">
+                  Phone Number
+                </h3>
+                <a
+                  href="tel:{{ contact_info.phone }}"
+                  class="text-gray-600 hover:text-blue-600 transition"
+                >
+                  {{ contact_info.phone }}
+                </a>
+                <p class="text-sm text-gray-500 mt-1">
+                  Mon-Fri, 9:00 AM - 6:00 PM
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start group">
+              <div
+                class="w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-yellow-600 transition"
+              >
+                <i
+                  class="fas fa-envelope text-yellow-600 text-xl group-hover:text-white transition"
+                ></i>
+              </div>
+              <div class="ml-4">
+                <h3 class="font-semibold text-gray-800 mb-1 text-lg">
+                  Email Address
+                </h3>
+                <a
+                  href="mailto:{{ contact_info.email }}"
+                  class="text-gray-600 hover:text-blue-600 transition"
+                >
+                  {{ contact_info.email }}
+                </a>
+                <p class="text-sm text-gray-500 mt-1">
+                  We'll respond within 24 hours
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start group">
+              <div
+                class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-purple-600 transition"
+              >
+                <i
+                  class="fas fa-clock text-purple-600 text-xl group-hover:text-white transition"
+                ></i>
+              </div>
+              <div class="ml-4">
+                <h3 class="font-semibold text-gray-800 mb-1 text-lg">
+                  Office Hours
+                </h3>
+                <p class="text-gray-600">Monday - Friday: 9:00 AM - 6:00 PM</p>
+                <p class="text-gray-600">Saturday: 10:00 AM - 2:00 PM</p>
+                <p class="text-gray-600">Sunday: Closed</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-8 border-t border-gray-200">
+            <h3 class="font-semibold text-gray-800 mb-4">
+              Follow Us on Social Media
+            </h3>
+            <div class="flex space-x-3">
+              {% if social_media.facebook %}
+              <a
+                href="{{ social_media.facebook }}"
+                target="_blank"
+                class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition transform hover:scale-110"
+              >
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              {% endif %} {% if social_media.instagram %}
+              <a
+                href="{{ social_media.instagram }}"
+                target="_blank"
+                class="w-12 h-12 bg-pink-600 rounded-full flex items-center justify-center text-white hover:bg-pink-700 transition transform hover:scale-110"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              {% endif %} {% if social_media.linkedin %}
+              <a
+                href="{{ social_media.linkedin }}"
+                target="_blank"
+                class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition transform hover:scale-110"
+              >
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              {% endif %} {% if social_media.twitter %}
+              <a
+                href="{{ social_media.twitter }}"
+                target="_blank"
+                class="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center text-white hover:bg-blue-500 transition transform hover:scale-110"
+              >
+                <i class="fab fa-twitter"></i>
+              </a>
+              {% endif %} {% if social_media.youtube %}
+              <a
+                href="{{ social_media.youtube }}"
+                target="_blank"
+                class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white hover:bg-red-700 transition transform hover:scale-110"
+              >
+                <i class="fab fa-youtube"></i>
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+       <!-- Map Section -->
+<div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+  <!-- Embedded Google Map -->
+  <div class="h-64 md:h-80 relative">
+    <iframe
+      src="https://www.google.com/maps?q={{ contact_info.address.city }},{{ contact_info.address.state }}&output=embed"
+      width="100%"
+      height="100%"
+      class="absolute inset-0"
+      style="border:0;"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+
+  <!-- Optional City Info / Description -->
+  <div class="p-6 text-center bg-gradient-to-r from-blue-50 to-green-50">
+    <p class="text-gray-700 font-semibold text-lg">
+      {{ contact_info.address.city }}, {{ contact_info.address.state }}
+    </p>
+    <p class="text-gray-500 text-sm mt-2">
+      Visit our location or find us on Google Maps below.
+    </p>
+  </div>
+</div>
+
+  </div>
+</section>
+
+<!-- Quick Links / FAQs -->
+<section class="py-20 bg-gray-50">
+  <div class="container mx-auto px-6">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">
+      Looking for Something Specific?
+    </h2>
+    <p class="text-gray-600 text-center mb-12">
+      Here are some quick links that might help
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+      <a
+        href="{{ url_for('volunteer') }}"
+        class="card-hover bg-white p-8 rounded-2xl shadow-lg text-center group"
+      >
+        <div
+          class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-600 transition"
+        >
+          <i
+            class="fas fa-hands-helping text-3xl text-blue-600 group-hover:text-white transition"
+          ></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Volunteer With Us</h3>
+        <p class="text-gray-600 mb-4">Join our team of dedicated volunteers</p>
+        <span class="text-blue-600 font-semibold group-hover:underline">
+          Apply Now →
+        </span>
+      </a>
+
+      <a
+        href="{{ url_for('donate') }}"
+        class="card-hover bg-white p-8 rounded-2xl shadow-lg text-center group"
+      >
+        <div
+          class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-600 transition"
+        >
+          <i
+            class="fas fa-donate text-3xl text-green-600 group-hover:text-white transition"
+          ></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Make a Donation</h3>
+        <p class="text-gray-600 mb-4">Support our programs financially</p>
+        <span class="text-blue-600 font-semibold group-hover:underline">
+          Donate Now →
+        </span>
+      </a>
+
+      <a
+        href="{{ url_for('programs') }}"
+        class="card-hover bg-white p-8 rounded-2xl shadow-lg text-center group"
+      >
+        <div
+          class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-yellow-600 transition"
+        >
+          <i
+            class="fas fa-heart text-3xl text-yellow-600 group-hover:text-white transition"
+          ></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Our Programs</h3>
+        <p class="text-gray-600 mb-4">Learn about our initiatives</p>
+        <span class="text-blue-600 font-semibold group-hover:underline">
+          View Programs →
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Additional Contact Options -->
+<section class="py-20 bg-white">
+  <div class="container mx-auto px-6">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-12">
+        Other Ways to Reach Us
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl">
+          <div class="flex items-center mb-4">
+            <i class="fas fa-envelope text-3xl text-blue-600 mr-4"></i>
+            <h3 class="text-xl font-bold">Media Inquiries</h3>
+          </div>
+          <p class="text-gray-600 mb-4">
+            For press releases, interviews, or media partnerships
+          </p>
+          <a
+            href="mailto:media@{{ contact_info.email.split('@')[1] }}"
+            class="text-blue-600 font-semibold hover:underline"
+          >
+            media@{{ contact_info.email.split('@')[1] }}
+          </a>
+        </div>
+
+        <div
+          class="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl"
+        >
+          <div class="flex items-center mb-4">
+            <i class="fas fa-handshake text-3xl text-green-600 mr-4"></i>
+            <h3 class="text-xl font-bold">Partnerships</h3>
+          </div>
+          <p class="text-gray-600 mb-4">
+            Corporate partnerships and collaborations
+          </p>
+          <a
+            href="mailto:partnerships@{{ contact_info.email.split('@')[1] }}"
+            class="text-green-600 font-semibold hover:underline"
+          >
+            partnerships@{{ contact_info.email.split('@')[1] }}
+          </a>
+        </div>
+
+        <div
+          class="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl"
+        >
+          <div class="flex items-center mb-4">
+            <i class="fab fa-whatsapp text-3xl text-green-600 mr-4"></i>
+            <h3 class="text-xl font-bold">WhatsApp</h3>
+          </div>
+          <p class="text-gray-600 mb-4">Quick queries and support</p>
+          <a
+            href="https://wa.me/{{ contact_info.phone|replace('+', '')|replace(' ', '') }}"
+            target="_blank"
+            class="text-green-600 font-semibold hover:underline inline-flex items-center"
+          >
+            <i class="fab fa-whatsapp mr-2"></i>
+            Chat on WhatsApp
+          </a>
+        </div>
+
+        <div
+          class="bg-gradient-to-br from-yellow-50 to-yellow-100 p-8 rounded-2xl"
+        >
+          <div class="flex items-center mb-4">
+            <i class="fas fa-users text-3xl text-yellow-600 mr-4"></i>
+            <h3 class="text-xl font-bold">Join Our Community</h3>
+          </div>
+          <p class="text-gray-600 mb-4">
+            Connect with volunteers and supporters
+          </p>
+          <a
+            href="{{ social_media.facebook }}"
+            target="_blank"
+            class="text-blue-600 font-semibold hover:underline inline-flex items-center"
+          >
+            <i class="fab fa-facebook mr-2"></i>
+            Facebook Community
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Newsletter Signup -->
+<section class="py-20 animated-gradient text-white">
+  <div class="container mx-auto px-6 text-center">
+    <div class="max-w-2xl mx-auto">
+      <i class="fas fa-paper-plane text-6xl mb-6 opacity-90"></i>
+      <h2 class="text-4xl font-bold mb-4">Stay Connected</h2>
+      <p class="text-xl opacity-90 mb-8">
+        Subscribe to our newsletter for updates, stories, and ways to get
+        involved
+      </p>
+
+      <form
+        method="POST"
+        action="{{ url_for('index') }}"
+        class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+      >
+        <input
+          type="email"
+          name="newsletter_email"
+          placeholder="Your email address"
+          class="flex-1 px-6 py-4 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-white/50"
+          required
+        />
+        <button
+          type="submit"
+          class="bg-yellow-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-yellow-600 transition whitespace-nowrap"
+        >
+          Subscribe
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
